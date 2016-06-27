@@ -32,9 +32,32 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
         $reflectionProperty = new \ReflectionProperty($object, $property);
         if ($reflectionProperty->isPrivate() || $reflectionProperty->isProtected()) {
             $reflectionProperty->setAccessible(true);
-        }
+            $value = $reflectionProperty->getValue($object);
+            $reflectionProperty->setAccessible(false);
 
-        return $reflectionProperty->getValue($object);
+            return $value;
+        } else {
+            return $object->$property;
+        }
+    }
+
+    /**
+     * @param object $object
+     * @param string $property
+     * @param mixed  $value
+     */
+    protected function setPrivatePropertyValue($object, $property, $value)
+    {
+        $reflectionProperty = new \ReflectionProperty($object, $property);
+        if ($reflectionProperty->isPrivate() || $reflectionProperty->isProtected()) {
+            $reflectionProperty->setAccessible(true);
+
+            $reflectionProperty->setValue($object, $value);
+
+            $reflectionProperty->setAccessible(false);
+        } else {
+            $object->$property = $value;
+        }
     }
 
     /**
