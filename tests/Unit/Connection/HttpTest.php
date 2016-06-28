@@ -80,7 +80,7 @@ class HttpTest extends AbstractTestCase
 
     public function testHttpConnection()
     {
-        $address = new Address(Address::PROTO_HTTP, 'localhost', 80);
+        $address = new Address(Address::PROTOCOL_HTTP, 'localhost', 80);
 
         $expectedRequest  = 'test request';
         $expectedResponse = 'test response';
@@ -110,7 +110,7 @@ class HttpTest extends AbstractTestCase
 
     public function testHttpsConnection()
     {
-        $address = new Address(Address::PROTO_HTTPS, 'localhost', 443);
+        $address = new Address(Address::PROTOCOL_HTTPS, 'localhost', 443);
 
         $expectedRequest  = 'test request';
         $expectedResponse = 'test response';
@@ -140,7 +140,7 @@ class HttpTest extends AbstractTestCase
 
     public function testHttpConnectionFailedToConnect()
     {
-        $address = new Address(Address::PROTO_HTTP, 'localhost', 5555);
+        $address = new Address(Address::PROTOCOL_HTTP, 'localhost', 5555);
 
         $expectedRequest  = 'test request';
         $expectedResponse = 'test response';

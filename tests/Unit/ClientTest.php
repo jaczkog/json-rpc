@@ -107,24 +107,24 @@ class ClientTest extends AbstractTestCase
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_TCP,
-                'expectedProtocol'       => Address::PROTO_TCP,
+                'expectedConnectionType' => AbstractConnection::CONN_TCP,
+                'expectedProtocol'       => Address::PROTOCOL_TCP,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 1111,
                 'expectedPath'           => null,
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
             'tcp without protocol'     => array(
                 'address'                => 'valid_host:1111',
                 'version'                => '2.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_TCP,
-                'expectedProtocol'       => Address::PROTO_TCP,
+                'expectedConnectionType' => AbstractConnection::CONN_TCP,
+                'expectedProtocol'       => Address::PROTOCOL_TCP,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 1111,
                 'expectedPath'           => null,
-                'expectedVersion'        => Client::VER_2,
+                'expectedVersion'        => Client::VERSION_2,
             ),
             'error - tcp missing port' => array(
                 'address'                => 'tcp://valid_host',
@@ -156,24 +156,24 @@ class ClientTest extends AbstractTestCase
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_HTTP,
-                'expectedProtocol'       => Address::PROTO_HTTP,
+                'expectedConnectionType' => AbstractConnection::CONN_HTTP,
+                'expectedProtocol'       => Address::PROTOCOL_HTTP,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 8080,
                 'expectedPath'           => '/path',
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
             'http without port and path' => array(
                 'address'                => 'http://valid_host',
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_HTTP,
-                'expectedProtocol'       => Address::PROTO_HTTP,
+                'expectedConnectionType' => AbstractConnection::CONN_HTTP,
+                'expectedProtocol'       => Address::PROTOCOL_HTTP,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 80,
                 'expectedPath'           => '/',
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
 
             'https'                       => array(
@@ -181,24 +181,24 @@ class ClientTest extends AbstractTestCase
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_HTTP,
-                'expectedProtocol'       => Address::PROTO_HTTPS,
+                'expectedConnectionType' => AbstractConnection::CONN_HTTP,
+                'expectedProtocol'       => Address::PROTOCOL_HTTPS,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 8080,
                 'expectedPath'           => '/path',
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
             'https without port and path' => array(
                 'address'                => 'https://valid_host',
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_HTTP,
-                'expectedProtocol'       => Address::PROTO_HTTPS,
+                'expectedConnectionType' => AbstractConnection::CONN_HTTP,
+                'expectedProtocol'       => Address::PROTOCOL_HTTPS,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 443,
                 'expectedPath'           => '/',
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
 
             'ws'                       => array(
@@ -206,24 +206,24 @@ class ClientTest extends AbstractTestCase
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_WS,
-                'expectedProtocol'       => Address::PROTO_WS,
+                'expectedConnectionType' => AbstractConnection::CONN_WS,
+                'expectedProtocol'       => Address::PROTOCOL_WS,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 8080,
                 'expectedPath'           => '/path',
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
             'ws without port and path' => array(
                 'address'                => 'ws://valid_host',
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_WS,
-                'expectedProtocol'       => Address::PROTO_WS,
+                'expectedConnectionType' => AbstractConnection::CONN_WS,
+                'expectedProtocol'       => Address::PROTOCOL_WS,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 80,
                 'expectedPath'           => '/',
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
 
             'wss'                       => array(
@@ -231,24 +231,24 @@ class ClientTest extends AbstractTestCase
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_WS,
-                'expectedProtocol'       => Address::PROTO_WSS,
+                'expectedConnectionType' => AbstractConnection::CONN_WS,
+                'expectedProtocol'       => Address::PROTOCOL_WSS,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 8080,
                 'expectedPath'           => '/path',
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
             'wss without port and path' => array(
                 'address'                => 'wss://valid_host',
                 'version'                => '1.0',
                 'expectedException'      => null,
                 'expectedExceptionMsg'   => null,
-                'expectedConnectionType' => Client::CONN_WS,
-                'expectedProtocol'       => Address::PROTO_WSS,
+                'expectedConnectionType' => AbstractConnection::CONN_WS,
+                'expectedProtocol'       => Address::PROTOCOL_WSS,
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 443,
                 'expectedPath'           => '/',
-                'expectedVersion'        => Client::VER_1,
+                'expectedVersion'        => Client::VERSION_1,
             ),
         );
     }
@@ -298,29 +298,29 @@ class ClientTest extends AbstractTestCase
 
     public function testConnectionCreated()
     {
-        $client = new Client('http://host/', Client::VER_1);
+        $client = new Client('http://host/', Client::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Http);
 
-        $client = new Client('https://host/', Client::VER_1);
+        $client = new Client('https://host/', Client::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Http);
 
-        $client = new Client('ws://host/', Client::VER_1);
+        $client = new Client('ws://host/', Client::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof WebSocket);
 
-        $client = new Client('wss://host/', Client::VER_1);
+        $client = new Client('wss://host/', Client::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof WebSocket);
 
-        $client = new Client('tcp://host:123/', Client::VER_1);
+        $client = new Client('tcp://host:123/', Client::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Tcp);
 
-        $client = new Client('host:123', Client::VER_1);
+        $client = new Client('host:123', Client::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Tcp);
     }
 
     public function testConnectionOptions()
     {
         $address = 'host:5555';
-        $version = Client::VER_1;
+        $version = Client::VERSION_1;
 
         $expectedOptions = array(
             'key1' => 'value1',
@@ -385,7 +385,7 @@ class ClientTest extends AbstractTestCase
     public function testSendRequestV1()
     {
         $address = 'host:5555';
-        $version = Client::VER_1;
+        $version = Client::VERSION_1;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -407,7 +407,7 @@ class ClientTest extends AbstractTestCase
     public function testSendRequestV1WithError()
     {
         $address = 'host:5555';
-        $version = Client::VER_1;
+        $version = Client::VERSION_1;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -431,7 +431,7 @@ class ClientTest extends AbstractTestCase
     public function testSendRequestV2()
     {
         $address = 'host:5555';
-        $version = Client::VER_2;
+        $version = Client::VERSION_2;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -453,7 +453,7 @@ class ClientTest extends AbstractTestCase
     public function testSendRequestV2WithError()
     {
         $address = 'host:5555';
-        $version = Client::VER_2;
+        $version = Client::VERSION_2;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -477,7 +477,7 @@ class ClientTest extends AbstractTestCase
     public function testSendBatchRequestV2()
     {
         $address  = 'host:5555';
-        $version  = Client::VER_2;
+        $version  = Client::VERSION_2;
         $requests = array(
             array('method01', array('param011', 'param012')),
             array('method02', array('param021', 'param022'), 55),
@@ -550,7 +550,7 @@ class ClientTest extends AbstractTestCase
     public function testSendNotificationV1()
     {
         $address = 'host:5555';
-        $version = Client::VER_1;
+        $version = Client::VERSION_1;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -569,7 +569,7 @@ class ClientTest extends AbstractTestCase
     public function testSendNotificationV2()
     {
         $address = 'host:5555';
-        $version = Client::VER_2;
+        $version = Client::VERSION_2;
         $method  = 'testMethod';
         $params  = array(1, '2');
 

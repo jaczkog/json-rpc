@@ -87,9 +87,9 @@ class Client extends JsonRpc
     private function createConnection($options = array())
     {
         switch ($this->connectionType) {
-            case self::CONN_HTTP:
+            case AbstractConnection::CONN_HTTP:
                 return new Http($this->address, $options);
-            case self::CONN_WS:
+            case AbstractConnection::CONN_WS:
                 return new WebSocket($this->address, $options);
             default:
                 return new Tcp($this->address, $options);

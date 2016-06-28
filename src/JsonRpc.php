@@ -3,23 +3,18 @@
 namespace JsonRpc;
 
 use JsonRpc\Common\Address;
+use JsonRpc\Connection\AbstractConnection;
 use JsonRpc\Exception\InvalidAddressException;
 use JsonRpc\Exception\InvalidVersionException;
 
 abstract class JsonRpc
 {
     /** JSON-RPC version 1.0 */
-    const VER_1 = '1.0';
+    const VERSION_1 = '1.0';
     /** JSON-RPC version 2.0 */
-    const VER_2 = '2.0';
+    const VERSION_2 = '2.0';
 
-    /** TCP connection */
-    const CONN_TCP = 'tcp';
-    /** HTTP connection */
-    const CONN_HTTP = 'http';
-    /** WebSocket connection */
-    const CONN_WS = 'ws';
-
+    /** Persistent connection */
     const OPTION_PERSISTENT = 'persistent';
 
     /** @var Address */
@@ -36,7 +31,7 @@ abstract class JsonRpc
      * @throws InvalidAddressException
      * @throws InvalidVersionException
      */
-    public function __construct($address, $version = JsonRpc::VER_1)
+    public function __construct($address, $version = self::VERSION_1)
     {
         $this->address        = $this->parseAddress($address);
         $this->connectionType = $this->getConnectionType($this->address->protocol);
@@ -55,12 +50,12 @@ abstract class JsonRpc
             throw new InvalidAddressException($address);
         }
 
-        $protocol = !empty($matches[1]) ? strtolower($matches[1]) : Address::PROTO_TCP;
+        $protocol = !empty($matches[1]) ? strtolower($matches[1]) : Address::PROTOCOL_TCP;
         $host     = $matches[2];
         $port     = !empty($matches[3]) ? (int)$matches[3] : null;
         $path     = !empty($matches[4]) ? $matches[4] : null;
 
-        if ($protocol == Address::PROTO_TCP) {
+        if ($protocol == Address::PROTOCOL_TCP) {
             if (empty($port)) {
                 throw new InvalidAddressException($address);
             }
@@ -77,13 +72,13 @@ abstract class JsonRpc
 
         if (empty($port)) {
             switch ($protocol) {
-                case Address::PROTO_HTTP:
-                case Address::PROTO_WS:
+                case Address::PROTOCOL_HTTP:
+                case Address::PROTOCOL_WS:
                     $port = 80;
                     break;
 
-                case Address::PROTO_HTTPS:
-                case Address::PROTO_WSS:
+                case Address::PROTOCOL_HTTPS:
+                case Address::PROTOCOL_WSS:
                     $port = 443;
                     break;
             }
@@ -100,16 +95,16 @@ abstract class JsonRpc
     private function getConnectionType($protocol)
     {
         switch ($protocol) {
-            case Address::PROTO_HTTP:
-            case Address::PROTO_HTTPS:
-                return JsonRpc::CONN_HTTP;
+            case Address::PROTOCOL_HTTP:
+            case Address::PROTOCOL_HTTPS:
+                return AbstractConnection::CONN_HTTP;
 
-            case Address::PROTO_WS:
-            case Address::PROTO_WSS:
-                return JsonRpc::CONN_WS;
+            case Address::PROTOCOL_WS:
+            case Address::PROTOCOL_WSS:
+                return AbstractConnection::CONN_WS;
 
             default:
-                return JsonRpc::CONN_TCP;
+                return AbstractConnection::CONN_TCP;
         }
     }
 
@@ -121,7 +116,7 @@ abstract class JsonRpc
      */
     private function verifyVersion($version)
     {
-        if (!in_array($version, array(JsonRpc::VER_1, JsonRpc::VER_2))) {
+        if (!in_array($version, array(self::VERSION_1, self::VERSION_2))) {
             throw new InvalidVersionException($version);
         }
 

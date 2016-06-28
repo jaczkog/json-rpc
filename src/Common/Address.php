@@ -4,11 +4,11 @@ namespace JsonRpc\Common;
 
 class Address
 {
-    const PROTO_HTTP  = 'http';
-    const PROTO_HTTPS = 'https';
-    const PROTO_WS    = 'ws';
-    const PROTO_WSS   = 'wss';
-    const PROTO_TCP   = 'tcp';
+    const PROTOCOL_HTTP  = 'http';
+    const PROTOCOL_HTTPS = 'https';
+    const PROTOCOL_WS    = 'ws';
+    const PROTOCOL_WSS   = 'wss';
+    const PROTOCOL_TCP   = 'tcp';
 
     /** @var string */
     public $protocol;

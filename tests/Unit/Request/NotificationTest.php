@@ -14,12 +14,12 @@ class NotificationTest extends AbstractTestCase
 
         $this->assertEquals(
             '{"method":"testMethod","params":[1,"value2"],"id":null}',
-            $request->toJson(JsonRpc::VER_1)
+            $request->toJson(JsonRpc::VERSION_1)
         );
 
         $this->assertEquals(
             '{"jsonrpc":"2.0","method":"testMethod","params":[1,"value2"]}',
-            $request->toJson(JsonRpc::VER_2)
+            $request->toJson(JsonRpc::VERSION_2)
         );
     }
 
@@ -27,9 +27,9 @@ class NotificationTest extends AbstractTestCase
     {
         $request = new Notification('testMethodNoParams');
 
-        $this->assertEquals('{"method":"testMethodNoParams","params":[],"id":null}', $request->toJson(JsonRpc::VER_1));
+        $this->assertEquals('{"method":"testMethodNoParams","params":[],"id":null}', $request->toJson(JsonRpc::VERSION_1));
 
-        $this->assertEquals('{"jsonrpc":"2.0","method":"testMethodNoParams"}', $request->toJson(JsonRpc::VER_2));
+        $this->assertEquals('{"jsonrpc":"2.0","method":"testMethodNoParams"}', $request->toJson(JsonRpc::VERSION_2));
     }
 
     public function testRequestJsonWithNamedParams()
@@ -38,12 +38,12 @@ class NotificationTest extends AbstractTestCase
 
         $this->assertEquals(
             '{"method":"testMethod3","params":[1,"value2"],"id":null}',
-            $request->toJson(JsonRpc::VER_1)
+            $request->toJson(JsonRpc::VERSION_1)
         );
 
         $this->assertEquals(
             '{"jsonrpc":"2.0","method":"testMethod3","params":{"param1":1,"param2":"value2"}}',
-            $request->toJson(JsonRpc::VER_2)
+            $request->toJson(JsonRpc::VERSION_2)
         );
     }
 

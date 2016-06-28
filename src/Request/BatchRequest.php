@@ -33,7 +33,7 @@ class BatchRequest extends AbstractRequest
      *
      * @return string
      */
-    public function toJson($version = JsonRpc::VER_1)
+    public function toJson($version = JsonRpc::VERSION_1)
     {
         return json_encode(
             array_map(

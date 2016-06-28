@@ -6,6 +6,13 @@ use JsonRpc\Common\Address;
 
 abstract class AbstractConnection
 {
+    /** TCP connection */
+    const CONN_TCP = 'tcp';
+    /** HTTP connection */
+    const CONN_HTTP = 'http';
+    /** WebSocket connection */
+    const CONN_WS = 'ws';
+
     /** @var Address */
     protected $address;
     /** @var array */

@@ -41,7 +41,7 @@ class BatchRequestTest extends \PHPUnit_Framework_TestCase
             '\\{"method"\\:"method10","params"\\:\\["param101","param102"\\],"id"\\:null\\},' .
             '\\{"method"\\:"method11","params"\\:\\[\\],"id"\\:null\\}' .
             '\\]$/',
-            $request->toJson(JsonRpc::VER_1)
+            $request->toJson(JsonRpc::VERSION_1)
         );
 
         $this->assertRegExp(
@@ -58,7 +58,7 @@ class BatchRequestTest extends \PHPUnit_Framework_TestCase
             '\\{"jsonrpc"\\:"2\\.0","method"\\:"method10","params"\\:\\{"param101"\\:"param101","param102"\\:"param102"\\}\\},' .
             '\\{"jsonrpc"\\:"2\\.0","method"\\:"method11"\\}' .
             '\\]$/',
-            $request->toJson(JsonRpc::VER_2)
+            $request->toJson(JsonRpc::VERSION_2)
         );
     }
 

@@ -58,7 +58,7 @@ class Request extends AbstractRequest
      *
      * @return string
      */
-    public function toJson($version = JsonRpc::VER_1)
+    public function toJson($version = JsonRpc::VERSION_1)
     {
         return json_encode($this->toArray($version));
     }
@@ -68,21 +68,21 @@ class Request extends AbstractRequest
      *
      * @return array
      */
-    public function toArray($version = JsonRpc::VER_1)
+    public function toArray($version = JsonRpc::VERSION_1)
     {
         $array = array();
 
-        if ($version !== JsonRpc::VER_1) {
+        if ($version !== JsonRpc::VERSION_1) {
             $array['jsonrpc'] = $version;
         }
 
         $array['method'] = $this->method;
 
-        if ($version === JsonRpc::VER_1 || !empty($this->params)) {
-            $array['params'] = $version === JsonRpc::VER_1 ? array_values($this->params) : $this->params;
+        if ($version === JsonRpc::VERSION_1 || !empty($this->params)) {
+            $array['params'] = $version === JsonRpc::VERSION_1 ? array_values($this->params) : $this->params;
         }
 
-        if ($version === JsonRpc::VER_1 || !empty($this->id)) {
+        if ($version === JsonRpc::VERSION_1 || !empty($this->id)) {
             $array['id'] = $this->id;
         }
 

@@ -11,7 +11,7 @@ abstract class AbstractRequest
      *
      * @return string
      */
-    abstract public function toJson($version = JsonRpc::VER_1);
+    abstract public function toJson($version = JsonRpc::VERSION_1);
 
     /**
      * @return string

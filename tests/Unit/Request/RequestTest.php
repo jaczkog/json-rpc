@@ -14,12 +14,12 @@ class RequestTest extends AbstractTestCase
 
         $this->assertRegExp(
             '/^\\{"method":"testMethod","params":\\[1,"value2"\\],"id":"[\w-]+"\\}$/',
-            $request->toJson(JsonRpc::VER_1)
+            $request->toJson(JsonRpc::VERSION_1)
         );
 
         $this->assertRegExp(
             '/^\\{"jsonrpc":"2.0","method":"testMethod","params":\\[1,"value2"\\],"id":"[\w-]+"\\}$/',
-            $request->toJson(JsonRpc::VER_2)
+            $request->toJson(JsonRpc::VERSION_2)
         );
     }
 
@@ -29,12 +29,12 @@ class RequestTest extends AbstractTestCase
 
         $this->assertRegExp(
             '/^\\{"method":"testMethod2","params":\\[\\],"id":"[\w-]+"\\}$/',
-            $request->toJson(JsonRpc::VER_1)
+            $request->toJson(JsonRpc::VERSION_1)
         );
 
         $this->assertRegExp(
             '/^\\{"jsonrpc":"2.0","method":"testMethod2","id":"[\w-]+"\\}$/',
-            $request->toJson(JsonRpc::VER_2)
+            $request->toJson(JsonRpc::VERSION_2)
         );
     }
 
@@ -44,12 +44,12 @@ class RequestTest extends AbstractTestCase
 
         $this->assertRegExp(
             '/^\\{"method":"testMethod3","params":\\[1,"value2"\\],"id":"[\w-]+"\\}$/',
-            $request->toJson(JsonRpc::VER_1)
+            $request->toJson(JsonRpc::VERSION_1)
         );
 
         $this->assertRegExp(
             '/^\\{"jsonrpc":"2.0","method":"testMethod3","params":\\{"param1":1,"param2":"value2"\\},"id":"[\w-]+"\\}$/',
-            $request->toJson(JsonRpc::VER_2)
+            $request->toJson(JsonRpc::VERSION_2)
         );
     }
 

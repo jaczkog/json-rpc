@@ -99,7 +99,7 @@ class TcpTest extends AbstractTestCase
 
     public function testTcpConnection()
     {
-        $address = new Address(Address::PROTO_TCP, 'localhost', 5555);
+        $address = new Address(Address::PROTOCOL_TCP, 'localhost', 5555);
 
         $expectedRequest  = 'test request';
         $expectedResponse = 'test response';
@@ -117,7 +117,7 @@ class TcpTest extends AbstractTestCase
 
     public function testPersistentTcpConnection()
     {
-        $address = new Address(Address::PROTO_TCP, 'localhost', 5555);
+        $address = new Address(Address::PROTOCOL_TCP, 'localhost', 5555);
 
         $expectedRequest  = 'test request';
         $expectedResponse = 'test response';
@@ -135,7 +135,7 @@ class TcpTest extends AbstractTestCase
 
     public function testTcpConnectionFailedToConnect()
     {
-        $address = new Address(Address::PROTO_TCP, 'localhost', 5555);
+        $address = new Address(Address::PROTOCOL_TCP, 'localhost', 5555);
 
         $expectedRequest  = 'test request';
         $expectedResponse = 'test response';
@@ -153,7 +153,7 @@ class TcpTest extends AbstractTestCase
 
     public function testTcpConnectionFailedToRead()
     {
-        $address = new Address(Address::PROTO_TCP, 'localhost', 5555);
+        $address = new Address(Address::PROTOCOL_TCP, 'localhost', 5555);
 
         $expectedRequest  = 'test request';
         $expectedResponse = 'test response';
