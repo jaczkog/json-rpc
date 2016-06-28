@@ -8,7 +8,7 @@ class Response
 {
     /** @var mixed */
     public $result;
-    /** @var Error */
+    /** @var Error|null */
     public $error;
     /** @var string */
     public $id;
@@ -27,6 +27,22 @@ class Response
         $this->id     = $id;
     }
 
+    /**
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        return !$this->isError();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isError()
+    {
+        return $this->error instanceof Error;
+    }
+    
     /**
      * @param string $responseString
      *

@@ -132,10 +132,14 @@ class ResponseTest extends AbstractTestCase
         $this->assertEquals($result, $response->result);
         $this->assertEquals($id, $response->id);
         if (isset($errorCode)) {
+            $this->assertTrue($response->isError());
+            $this->assertFalse($response->isSuccess());
             $this->assertTrue($response->error instanceof Error);
             $this->assertEquals($errorCode, $response->error->code);
             $this->assertEquals($errorMessage, $response->error->message);
         } else {
+            $this->assertTrue($response->isSuccess());
+            $this->assertFalse($response->isError());
             $this->assertNull($response->error);
         }
     }
