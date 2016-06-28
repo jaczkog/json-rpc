@@ -15,7 +15,18 @@ class Socket extends AbstractWrapper
      */
     public function open($hostname, $port = null, &$errno = null, &$errstr = null, $timeout = null)
     {
-        return pfsockopen($hostname, $port, $errno, $errstr, $timeout);
+        switch (func_num_args()) {
+            case 1:
+                return pfsockopen($hostname);
+            case 2:
+                return pfsockopen($hostname, $port);
+            case 3:
+                return pfsockopen($hostname, $port, $errno);
+            case 4:
+                return pfsockopen($hostname, $port, $errno, $errstr);
+            default:
+                return pfsockopen($hostname, $port, $errno, $errstr, $timeout);
+        }
     }
     
     /**
@@ -37,7 +48,12 @@ class Socket extends AbstractWrapper
      */
     public function write($handle, $string, $length = null)
     {
-        return fwrite($handle, $string, $length);
+        switch (func_num_args()) {
+            case 2:
+                return fwrite($handle, $string);
+            default:
+                return fwrite($handle, $string, $length);
+        }
     }
 
     public function flush($handle)
@@ -53,6 +69,11 @@ class Socket extends AbstractWrapper
      */
     public function read($handle, $length = null)
     {
-        return fgets($handle, $length);
+        switch (func_num_args()) {
+            case 1:
+                return fgets($handle);
+            default:
+                return fgets($handle, $length);
+        }
     }
 }
