@@ -67,6 +67,14 @@ class ResponseTest extends AbstractTestCase
                 'errorCode'    => -32601,
                 'errorMessage' => 'Procedure not found.',
             ),
+            'success with V1 error'            => array(
+                'json'         => '{"result": null, "error": "Procedure not found.", "id": 10}',
+                'exception'    => null,
+                'result'       => null,
+                'id'           => 10,
+                'errorCode'    => -1,
+                'errorMessage' => 'Procedure not found.',
+            ),
             'success with batch response'   => array(
                 'json'         => '[' .
                                   '{"jsonrpc":"2.0","result":7,"id":"1"},' .

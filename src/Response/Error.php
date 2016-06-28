@@ -33,7 +33,11 @@ class Error
      */
     public static function fromObject($error)
     {
-        if (!isset($error->code) || !isset($error->message)) {
+        if (is_string($error)) {
+            return new Error(-1, $error);
+        }
+
+        if (!is_object($error) || !isset($error->code) || !isset($error->message)) {
             throw new InvalidResponseException(sprintf('invalid error object: "%s"', var_export($error, true)));
         }
 
