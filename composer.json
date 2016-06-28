@@ -1,0 +1,30 @@
+{
+    "name": "jaczkog/json-rpc",
+    "description": "JSON-RPC client",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabor Jaczko",
+            "email": "gabor.jaczko@switchconcepts.com"
+        }
+    ],
+    "config": {
+        "platform": {
+            "php": "5.3.3"
+        }
+    },
+    "require": {
+        "php": ">=5.3",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "JsonRpc\\": "src",
+            "JsonRpc\\Tests\\": "tests"
+        }
+    }
+}
