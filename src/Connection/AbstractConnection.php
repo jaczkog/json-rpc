@@ -8,13 +8,18 @@ abstract class AbstractConnection
 {
     /** @var Address */
     protected $address;
+    /** @var array */
+    protected $options;
 
     /**
      * @param Address $address
+     * @param array   $options
      */
-    final public function __construct(Address $address)
+    final public function __construct(Address $address, $options = array())
     {
         $this->address = $address;
+        $this->options = $options;
+
         $this->init();
     }
 
@@ -37,4 +42,15 @@ abstract class AbstractConnection
      * @return string
      */
     abstract public function send($payload);
+
+    /**
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed|null
+     */
+    protected function getOption($key, $default = null)
+    {
+        return array_key_exists($key, $this->options) ? $this->options[$key] : $default;
+    }
 }

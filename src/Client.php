@@ -6,7 +6,6 @@ use JsonRpc\Connection\AbstractConnection;
 use JsonRpc\Connection\Http;
 use JsonRpc\Connection\Tcp;
 use JsonRpc\Connection\WebSocket;
-use JsonRpc\Exception\ConnectionException;
 use JsonRpc\Request\AbstractRequest;
 use JsonRpc\Request\BatchRequest;
 use JsonRpc\Request\Notification;
@@ -23,12 +22,13 @@ class Client extends JsonRpc
      *
      * @param string $address
      * @param string $version
+     * @param array  $options
      */
-    public function __construct($address, $version)
+    public function __construct($address, $version, $options = array())
     {
         parent::__construct($address, $version);
 
-        $this->connection = $this->createConnection();
+        $this->connection = $this->createConnection($options);
     }
 
     /**
@@ -71,7 +71,7 @@ class Client extends JsonRpc
     private function send($request)
     {
         $responseString = $this->connection->send($request->toJson($this->version));
-        
+
         if ($request instanceof Notification) {
             return true;
         } else {
@@ -80,18 +80,19 @@ class Client extends JsonRpc
     }
 
     /**
+     * @param array $options
+     *
      * @return AbstractConnection
-     * @throws ConnectionException
      */
-    private function createConnection()
+    private function createConnection($options = array())
     {
         switch ($this->connectionType) {
             case self::CONN_HTTP:
-                return new Http($this->address);
+                return new Http($this->address, $options);
             case self::CONN_WS:
-                return new WebSocket($this->address);
+                return new WebSocket($this->address, $options);
             default:
-                return new Tcp($this->address);
+                return new Tcp($this->address, $options);
         }
     }
 }

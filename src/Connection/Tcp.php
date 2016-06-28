@@ -4,6 +4,7 @@ namespace JsonRpc\Connection;
 
 use JsonRpc\Connection\Wrapper\Socket;
 use JsonRpc\Exception\ConnectionException;
+use JsonRpc\JsonRpc;
 
 class Tcp extends AbstractConnection
 {
@@ -19,7 +20,7 @@ class Tcp extends AbstractConnection
 
     protected function close()
     {
-        if ($this->wrapper->isConnected($this->handle)) {
+        if ($this->wrapper->isConnected($this->handle) && !$this->getOption(JsonRpc::OPTION_PERSISTENT, false)) {
             $this->wrapper->close($this->handle);
         }
     }

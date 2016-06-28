@@ -317,6 +317,26 @@ class ClientTest extends AbstractTestCase
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Tcp);
     }
 
+    public function testConnectionOptions()
+    {
+        $address = 'host:5555';
+        $version = Client::VER_1;
+
+        $expectedOptions = array(
+            'key1' => 'value1',
+            'key2' => 'value2',
+        );
+
+        $client     = new Client($address, $version, $expectedOptions);
+        $connection = $this->getPrivatePropertyValue($client, 'connection');
+
+        $this->assertTrue($connection instanceof Tcp);
+
+        $actualOptions = $this->getPrivatePropertyValue($connection, 'options');
+
+        $this->assertEquals($expectedOptions, $actualOptions);
+    }
+
     /**
      * @param string $requestPattern
      * @param string $responseJson

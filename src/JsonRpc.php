@@ -20,6 +20,8 @@ abstract class JsonRpc
     /** WebSocket connection */
     const CONN_WS = 'ws';
 
+    const OPTION_PERSISTENT = 'persistent';
+
     /** @var Address */
     protected $address;
     /** @var string */

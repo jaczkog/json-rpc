@@ -5,6 +5,7 @@ namespace JsonRpc\Tests\Unit\Connection;
 use JsonRpc\Common\Address;
 use JsonRpc\Connection\Tcp;
 use JsonRpc\Connection\Wrapper\Socket;
+use JsonRpc\JsonRpc;
 use JsonRpc\Tests\Unit\AbstractTestCase;
 
 class TcpTest extends AbstractTestCase
@@ -15,6 +16,7 @@ class TcpTest extends AbstractTestCase
      * @param string  $expectedResponse
      * @param bool    $connectionError
      * @param bool    $readError
+     * @param bool    $closeExpected
      *
      * @return Socket|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -23,7 +25,8 @@ class TcpTest extends AbstractTestCase
         $expectedRequest,
         $expectedResponse,
         $connectionError = false,
-        $readError = false
+        $readError = false,
+        $closeExpected = true
     ) {
         $resource = uniqid('r');
 
@@ -51,7 +54,7 @@ class TcpTest extends AbstractTestCase
             );
 
         $socketWrapper
-            ->expects($connectionError ? $this->never() : $this->once())
+            ->expects($connectionError || !$closeExpected ? $this->never() : $this->once())
             ->method('close')
             ->with(
                 $this->equalTo($resource)
@@ -104,6 +107,24 @@ class TcpTest extends AbstractTestCase
         $wrapperMock = $this->createWrapperMock($address, $expectedRequest, $expectedResponse);
 
         $conn = new Tcp($address);
+
+        $this->setPrivatePropertyValue($conn, 'wrapper', $wrapperMock);
+
+        $response = $conn->send($expectedRequest);
+
+        $this->assertEquals($expectedResponse, $response);
+    }
+
+    public function testPersistentTcpConnection()
+    {
+        $address = new Address(Address::PROTO_TCP, 'localhost', 5555);
+
+        $expectedRequest  = 'test request';
+        $expectedResponse = 'test response';
+
+        $wrapperMock = $this->createWrapperMock($address, $expectedRequest, $expectedResponse, false, false, false);
+
+        $conn = new Tcp($address, array(JsonRpc::OPTION_PERSISTENT => true));
 
         $this->setPrivatePropertyValue($conn, 'wrapper', $wrapperMock);
 
