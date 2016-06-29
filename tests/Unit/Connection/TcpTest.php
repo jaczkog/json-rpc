@@ -30,10 +30,10 @@ class TcpTest extends AbstractTestCase
     ) {
         $resource = uniqid('r');
 
-        /** @var Socket|\PHPUnit_Framework_MockObject_MockObject $socketWrapper */
-        $socketWrapper = $this->getMock('\\JsonRpc\\Connection\\Wrapper\\Socket', array());
+        /** @var Socket|\PHPUnit_Framework_MockObject_MockObject $wrapper */
+        $wrapper = $this->getMock('\\JsonRpc\\Connection\\Wrapper\\Socket', array());
 
-        $socketWrapper
+        $wrapper
             ->expects($this->once())
             ->method('open')
             ->with(
@@ -53,14 +53,14 @@ class TcpTest extends AbstractTestCase
                 }
             );
 
-        $socketWrapper
+        $wrapper
             ->expects($connectionError || !$closeExpected ? $this->never() : $this->once())
             ->method('close')
             ->with(
                 $this->equalTo($resource)
             );
 
-        $socketWrapper
+        $wrapper
             ->expects($this->any())
             ->method('isConnected')
             ->willReturnCallback(
@@ -69,7 +69,7 @@ class TcpTest extends AbstractTestCase
                 }
             );
 
-        $socketWrapper
+        $wrapper
             ->expects($connectionError ? $this->never() : $this->once())
             ->method('write')
             ->with(
@@ -78,7 +78,7 @@ class TcpTest extends AbstractTestCase
             )
             ->willReturn(strlen($expectedRequest));
 
-        $socketWrapper
+        $wrapper
             ->expects($connectionError ? $this->never() : $this->once())
             ->method('flush')
             ->with(
@@ -86,7 +86,7 @@ class TcpTest extends AbstractTestCase
             )
             ->willReturn(true);
 
-        $socketWrapper
+        $wrapper
             ->expects($connectionError ? $this->never() : $this->once())
             ->method('read')
             ->with(
@@ -94,7 +94,7 @@ class TcpTest extends AbstractTestCase
             )
             ->willReturn($readError ? false : $expectedResponse);
 
-        return $socketWrapper;
+        return $wrapper;
     }
 
     public function testTcpConnection()

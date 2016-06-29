@@ -25,10 +25,10 @@ class HttpTest extends AbstractTestCase
     ) {
         $resource = uniqid('r');
 
-        /** @var Curl|\PHPUnit_Framework_MockObject_MockObject $socketWrapper */
-        $socketWrapper = $this->getMock('\\JsonRpc\\Connection\\Wrapper\\Curl', array());
+        /** @var Curl|\PHPUnit_Framework_MockObject_MockObject $wrapper */
+        $wrapper = $this->getMock('\\JsonRpc\\Connection\\Wrapper\\Curl', array());
 
-        $socketWrapper
+        $wrapper
             ->expects($this->once())
             ->method('init')
             ->with(
@@ -36,14 +36,14 @@ class HttpTest extends AbstractTestCase
             )
             ->willReturn($connectionError ? false : $resource);
 
-        $socketWrapper
+        $wrapper
             ->expects($connectionError ? $this->never() : $this->once())
             ->method('close')
             ->with(
                 $this->equalTo($resource)
             );
 
-        $socketWrapper
+        $wrapper
             ->expects($this->any())
             ->method('isConnected')
             ->willReturnCallback(
@@ -53,7 +53,7 @@ class HttpTest extends AbstractTestCase
             );
 
         $optionsSet = &$this->optionsSet;
-        $socketWrapper
+        $wrapper
             ->expects($connectionError ? $this->never() : $this->atLeast(4))
             ->method('setopt')
             ->with(
@@ -67,7 +67,7 @@ class HttpTest extends AbstractTestCase
                 }
             );
 
-        $socketWrapper
+        $wrapper
             ->expects($connectionError ? $this->never() : $this->once())
             ->method('exec')
             ->with(
@@ -75,7 +75,7 @@ class HttpTest extends AbstractTestCase
             )
             ->willReturn($expectedResponse);
 
-        return $socketWrapper;
+        return $wrapper;
     }
 
     public function testHttpConnection()
@@ -117,11 +117,11 @@ class HttpTest extends AbstractTestCase
 
         $socketWrapper = $this->createWrapperMock($address, $expectedResponse);
 
-        $tcp = new Http($address);
+        $conn = new Http($address);
 
-        $this->setPrivatePropertyValue($tcp, 'wrapper', $socketWrapper);
+        $this->setPrivatePropertyValue($conn, 'wrapper', $socketWrapper);
 
-        $response = $tcp->send($expectedRequest);
+        $response = $conn->send($expectedRequest);
 
         $this->assertEquals($expectedResponse, $response);
 
@@ -147,15 +147,15 @@ class HttpTest extends AbstractTestCase
 
         $socketWrapper = $this->createWrapperMock($address, $expectedResponse, true);
 
-        $tcp = new Http($address);
+        $conn = new Http($address);
 
-        $this->setPrivatePropertyValue($tcp, 'wrapper', $socketWrapper);
+        $this->setPrivatePropertyValue($conn, 'wrapper', $socketWrapper);
 
         $this->setExpectedException(
             '\\JsonRpc\\Exception\\ConnectionException',
             sprintf('Could not connect to "%s"', $address)
         );
 
-        $tcp->send($expectedRequest);
+        $conn->send($expectedRequest);
     }
 }

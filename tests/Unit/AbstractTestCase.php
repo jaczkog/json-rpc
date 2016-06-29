@@ -16,9 +16,13 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
         $reflectionMethod = new \ReflectionMethod($object, $method);
         if ($reflectionMethod->isPrivate() || $reflectionMethod->isProtected()) {
             $reflectionMethod->setAccessible(true);
-        }
+            $result = $reflectionMethod->invokeArgs($reflectionMethod->isStatic() ? null : $object, $args);
+            $reflectionMethod->setAccessible(false);
 
-        return $reflectionMethod->invokeArgs($reflectionMethod->isStatic() ? null : $object, $args);
+            return $result;
+        } else {
+            return call_user_func_array(array($object, $method), $args);
+        }
     }
 
     /**
@@ -51,9 +55,7 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
         $reflectionProperty = new \ReflectionProperty($object, $property);
         if ($reflectionProperty->isPrivate() || $reflectionProperty->isProtected()) {
             $reflectionProperty->setAccessible(true);
-
             $reflectionProperty->setValue($object, $value);
-
             $reflectionProperty->setAccessible(false);
         } else {
             $object->$property = $value;
