@@ -12,7 +12,7 @@ use JsonRpc\Request\Notification;
 use JsonRpc\Request\Request;
 use JsonRpc\Response\Response;
 
-class Client extends JsonRpc
+class JsonRpcClient extends JsonRpc
 {
     /** @var AbstractConnection */
     private $connection;

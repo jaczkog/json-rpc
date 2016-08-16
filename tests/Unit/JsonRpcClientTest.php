@@ -2,7 +2,7 @@
 
 namespace JsonRpc\Tests\Unit;
 
-use JsonRpc\Client;
+use JsonRpc\JsonRpcClient;
 use JsonRpc\Common\Address;
 use JsonRpc\Connection\AbstractConnection;
 use JsonRpc\Connection\Http;
@@ -12,7 +12,7 @@ use JsonRpc\Request\Notification;
 use JsonRpc\Request\Request;
 use JsonRpc\Response\Response;
 
-class ClientTest extends AbstractTestCase
+class JsonRpcClientTest extends AbstractTestCase
 {
     public function providerConstructor()
     {
@@ -112,7 +112,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 1111,
                 'expectedPath'           => null,
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
             'tcp without protocol'     => array(
                 'address'                => 'valid_host:1111',
@@ -124,7 +124,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 1111,
                 'expectedPath'           => null,
-                'expectedVersion'        => Client::VERSION_2,
+                'expectedVersion'        => JsonRpcClient::VERSION_2,
             ),
             'error - tcp missing port' => array(
                 'address'                => 'tcp://valid_host',
@@ -161,7 +161,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 8080,
                 'expectedPath'           => '/path',
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
             'http without port and path' => array(
                 'address'                => 'http://valid_host',
@@ -173,7 +173,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 80,
                 'expectedPath'           => '/',
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
 
             'https'                       => array(
@@ -186,7 +186,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 8080,
                 'expectedPath'           => '/path',
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
             'https without port and path' => array(
                 'address'                => 'https://valid_host',
@@ -198,7 +198,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 443,
                 'expectedPath'           => '/',
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
 
             'ws'                       => array(
@@ -211,7 +211,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 8080,
                 'expectedPath'           => '/path',
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
             'ws without port and path' => array(
                 'address'                => 'ws://valid_host',
@@ -223,7 +223,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 80,
                 'expectedPath'           => '/',
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
 
             'wss'                       => array(
@@ -236,7 +236,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 8080,
                 'expectedPath'           => '/path',
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
             'wss without port and path' => array(
                 'address'                => 'wss://valid_host',
@@ -248,7 +248,7 @@ class ClientTest extends AbstractTestCase
                 'expectedHost'           => 'valid_host',
                 'expectedPort'           => 443,
                 'expectedPath'           => '/',
-                'expectedVersion'        => Client::VERSION_1,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
         );
     }
@@ -283,7 +283,7 @@ class ClientTest extends AbstractTestCase
             $this->setExpectedException($expectedException, $expectedExceptionMsg);
         }
 
-        $client = new Client($address, $version);
+        $client = new JsonRpcClient($address, $version);
 
         /** @var Address $address */
         $address = $this->getPrivatePropertyValue($client, 'address');
@@ -298,36 +298,36 @@ class ClientTest extends AbstractTestCase
 
     public function testConnectionCreated()
     {
-        $client = new Client('http://host/', Client::VERSION_1);
+        $client = new JsonRpcClient('http://host/', JsonRpcClient::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Http);
 
-        $client = new Client('https://host/', Client::VERSION_1);
+        $client = new JsonRpcClient('https://host/', JsonRpcClient::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Http);
 
-        $client = new Client('ws://host/', Client::VERSION_1);
+        $client = new JsonRpcClient('ws://host/', JsonRpcClient::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof WebSocket);
 
-        $client = new Client('wss://host/', Client::VERSION_1);
+        $client = new JsonRpcClient('wss://host/', JsonRpcClient::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof WebSocket);
 
-        $client = new Client('tcp://host:123/', Client::VERSION_1);
+        $client = new JsonRpcClient('tcp://host:123/', JsonRpcClient::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Tcp);
 
-        $client = new Client('host:123', Client::VERSION_1);
+        $client = new JsonRpcClient('host:123', JsonRpcClient::VERSION_1);
         $this->assertTrue($this->getPrivatePropertyValue($client, 'connection') instanceof Tcp);
     }
 
     public function testConnectionOptions()
     {
         $address = 'host:5555';
-        $version = Client::VERSION_1;
+        $version = JsonRpcClient::VERSION_1;
 
         $expectedOptions = array(
             'key1' => 'value1',
             'key2' => 'value2',
         );
 
-        $client     = new Client($address, $version, $expectedOptions);
+        $client     = new JsonRpcClient($address, $version, $expectedOptions);
         $connection = $this->getPrivatePropertyValue($client, 'connection');
 
         $this->assertTrue($connection instanceof Tcp);
@@ -385,7 +385,7 @@ class ClientTest extends AbstractTestCase
     public function testSendRequestV1()
     {
         $address = 'host:5555';
-        $version = Client::VERSION_1;
+        $version = JsonRpcClient::VERSION_1;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -394,7 +394,7 @@ class ClientTest extends AbstractTestCase
 
         $connectionMock = $this->createConnectionMock($requestPattern, $responseJson);
 
-        $client = new Client($address, $version);
+        $client = new JsonRpcClient($address, $version);
         $this->setPrivatePropertyValue($client, 'connection', $connectionMock);
 
         $response = $client->sendRequest($method, $params);
@@ -407,7 +407,7 @@ class ClientTest extends AbstractTestCase
     public function testSendRequestV1WithError()
     {
         $address = 'host:5555';
-        $version = Client::VERSION_1;
+        $version = JsonRpcClient::VERSION_1;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -416,7 +416,7 @@ class ClientTest extends AbstractTestCase
 
         $connectionMock = $this->createConnectionMock($requestPattern, $responseJson);
 
-        $client = new Client($address, $version);
+        $client = new JsonRpcClient($address, $version);
         $this->setPrivatePropertyValue($client, 'connection', $connectionMock);
 
         $response = $client->sendRequest($method, $params);
@@ -431,7 +431,7 @@ class ClientTest extends AbstractTestCase
     public function testSendRequestV2()
     {
         $address = 'host:5555';
-        $version = Client::VERSION_2;
+        $version = JsonRpcClient::VERSION_2;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -440,7 +440,7 @@ class ClientTest extends AbstractTestCase
 
         $connectionMock = $this->createConnectionMock($requestPattern, $responseJson);
 
-        $client = new Client($address, $version);
+        $client = new JsonRpcClient($address, $version);
         $this->setPrivatePropertyValue($client, 'connection', $connectionMock);
 
         $response = $client->sendRequest($method, $params);
@@ -453,7 +453,7 @@ class ClientTest extends AbstractTestCase
     public function testSendRequestV2WithError()
     {
         $address = 'host:5555';
-        $version = Client::VERSION_2;
+        $version = JsonRpcClient::VERSION_2;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -462,7 +462,7 @@ class ClientTest extends AbstractTestCase
 
         $connectionMock = $this->createConnectionMock($requestPattern, $responseJson);
 
-        $client = new Client($address, $version);
+        $client = new JsonRpcClient($address, $version);
         $this->setPrivatePropertyValue($client, 'connection', $connectionMock);
 
         $response = $client->sendRequest($method, $params);
@@ -477,7 +477,7 @@ class ClientTest extends AbstractTestCase
     public function testSendBatchRequestV2()
     {
         $address  = 'host:5555';
-        $version  = Client::VERSION_2;
+        $version  = JsonRpcClient::VERSION_2;
         $requests = array(
             array('method01', array('param011', 'param012')),
             array('method02', array('param021', 'param022'), 55),
@@ -518,7 +518,7 @@ class ClientTest extends AbstractTestCase
 
         $connectionMock = $this->createConnectionMock($requestPattern, $responseJson);
 
-        $client = new Client($address, $version);
+        $client = new JsonRpcClient($address, $version);
         $this->setPrivatePropertyValue($client, 'connection', $connectionMock);
 
         $responses = $client->sendBatchRequest($requests);
@@ -550,7 +550,7 @@ class ClientTest extends AbstractTestCase
     public function testSendNotificationV1()
     {
         $address = 'host:5555';
-        $version = Client::VERSION_1;
+        $version = JsonRpcClient::VERSION_1;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -558,7 +558,7 @@ class ClientTest extends AbstractTestCase
 
         $connectionMock = $this->createConnectionMock($requestPattern, null);
 
-        $client = new Client($address, $version);
+        $client = new JsonRpcClient($address, $version);
         $this->setPrivatePropertyValue($client, 'connection', $connectionMock);
 
         $response = $client->sendNotification($method, $params);
@@ -569,7 +569,7 @@ class ClientTest extends AbstractTestCase
     public function testSendNotificationV2()
     {
         $address = 'host:5555';
-        $version = Client::VERSION_2;
+        $version = JsonRpcClient::VERSION_2;
         $method  = 'testMethod';
         $params  = array(1, '2');
 
@@ -577,7 +577,7 @@ class ClientTest extends AbstractTestCase
 
         $connectionMock = $this->createConnectionMock($requestPattern, null);
 
-        $client = new Client($address, $version);
+        $client = new JsonRpcClient($address, $version);
         $this->setPrivatePropertyValue($client, 'connection', $connectionMock);
 
         $response = $client->sendNotification($method, $params);

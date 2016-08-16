@@ -57,7 +57,7 @@ class Response
             throw new InvalidResponseException(
                 sprintf(
                     '%s: %s',
-                    function_exists('json_last_error_msg') ? json_last_error_msg() : self::getJsonErrorMessage(),
+                    function_exists('json_last_error_msg') ? json_last_error_msg() : self::getLastJsonErrorMessage(),
                     $responseString
                 )
             );
@@ -92,10 +92,12 @@ class Response
         );
     }
 
-    /**+
+    /**
+     * Fallback method for json_last_error_msg() using PHP < 5.5.0
+     *
      * @return string
      */
-    private static function getJsonErrorMessage()
+    private static function getLastJsonErrorMessage()
     {
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
