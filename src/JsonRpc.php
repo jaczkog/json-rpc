@@ -46,7 +46,7 @@ abstract class JsonRpc
      */
     private function parseAddress($address)
     {
-        if (!preg_match('~^(?:(https?|wss?|tcp)://)?([a-z0-9\\._-]+)(?::(\d+))?(/.*)?$~', $address, $matches)) {
+        if (!preg_match('~^(?:(https?|wss?|tcp|mock)://)?([a-z0-9\\._-]+)(?::(\d+))?(/.*)?$~', $address, $matches)) {
             throw new InvalidAddressException($address);
         }
 
@@ -102,6 +102,9 @@ abstract class JsonRpc
             case Address::PROTOCOL_WS:
             case Address::PROTOCOL_WSS:
                 return AbstractConnection::CONN_WS;
+
+            case Address::PROTOCOL_MOCK:
+                return AbstractConnection::CONN_MOCK;
 
             default:
                 return AbstractConnection::CONN_TCP;

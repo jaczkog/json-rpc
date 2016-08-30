@@ -12,6 +12,8 @@ abstract class AbstractConnection
     const CONN_HTTP = 'http';
     /** WebSocket connection */
     const CONN_WS = 'ws';
+    /** Mock connection */
+    const CONN_MOCK = 'mock';
 
     /** @var Address */
     protected $address;

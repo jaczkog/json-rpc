@@ -2,12 +2,12 @@
 
 namespace JsonRpc\Tests\Unit;
 
-use JsonRpc\JsonRpcClient;
 use JsonRpc\Common\Address;
 use JsonRpc\Connection\AbstractConnection;
 use JsonRpc\Connection\Http;
 use JsonRpc\Connection\Tcp;
 use JsonRpc\Connection\WebSocket;
+use JsonRpc\JsonRpcClient;
 use JsonRpc\Request\Notification;
 use JsonRpc\Request\Request;
 use JsonRpc\Response\Response;
@@ -583,5 +583,45 @@ class JsonRpcClientTest extends AbstractTestCase
         $response = $client->sendNotification($method, $params);
 
         $this->assertTrue($response);
+    }
+
+    public function testMockConnectionTypeV1()
+    {
+        $address = 'mock://localhost';
+        $version = JsonRpcClient::VERSION_1;
+        $method  = 'testMethod';
+        $params  = array(1, '2');
+
+        $client = new JsonRpcClient($address, $version);
+
+        $response = $client->sendNotification($method, $params);
+        $this->assertTrue($response);
+
+        $response = $client->sendRequest($method, $params);
+        $this->assertTrue($response->isSuccess());
+        $this->assertTrue(isset($response->result->method));
+        $this->assertTrue(isset($response->result->params));
+        $this->assertEquals($method, $response->result->method);
+        $this->assertEquals($params, $response->result->params);
+    }
+
+    public function testMockConnectionTypeV2()
+    {
+        $address = 'mock://localhost';
+        $version = JsonRpcClient::VERSION_2;
+        $method  = 'testMethod';
+        $params  = array(1, '2');
+
+        $client = new JsonRpcClient($address, $version);
+
+        $response = $client->sendNotification($method, $params);
+        $this->assertTrue($response);
+
+        $response = $client->sendRequest($method, $params);
+        $this->assertTrue($response->isSuccess());
+        $this->assertTrue(isset($response->result->method));
+        $this->assertTrue(isset($response->result->params));
+        $this->assertEquals($method, $response->result->method);
+        $this->assertEquals($params, $response->result->params);
     }
 }

@@ -9,6 +9,7 @@ class Address
     const PROTOCOL_WS    = 'ws';
     const PROTOCOL_WSS   = 'wss';
     const PROTOCOL_TCP   = 'tcp';
+    const PROTOCOL_MOCK  = 'mock';
 
     /** @var string */
     public $protocol;

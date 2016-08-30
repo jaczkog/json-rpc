@@ -4,6 +4,7 @@ namespace JsonRpc;
 
 use JsonRpc\Connection\AbstractConnection;
 use JsonRpc\Connection\Http;
+use JsonRpc\Connection\Mock;
 use JsonRpc\Connection\Tcp;
 use JsonRpc\Connection\WebSocket;
 use JsonRpc\Request\AbstractRequest;
@@ -91,6 +92,8 @@ class JsonRpcClient extends JsonRpc
                 return new Http($this->address, $options);
             case AbstractConnection::CONN_WS:
                 return new WebSocket($this->address, $options);
+            case AbstractConnection::CONN_MOCK:
+                return new Mock($this->address, $options);
             default:
                 return new Tcp($this->address, $options);
         }
