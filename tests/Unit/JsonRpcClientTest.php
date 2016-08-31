@@ -605,6 +605,48 @@ class JsonRpcClientTest extends AbstractTestCase
         $this->assertEquals($params, $response->result->params);
     }
 
+    public function testMockConnectionTypeV1MockedResult()
+    {
+        $expectedResult = 'mocked result';
+        $address        = sprintf('mock://{"result":"%s"}', $expectedResult);
+        $version        = JsonRpcClient::VERSION_1;
+        $method         = 'testMethod';
+        $params         = array(1, '2');
+
+        $client = new JsonRpcClient($address, $version);
+
+        $response = $client->sendNotification($method, $params);
+        $this->assertTrue($response);
+
+        $response = $client->sendRequest($method, $params);
+        $this->assertTrue($response->isSuccess());
+        $this->assertEquals($expectedResult, $response->result);
+    }
+
+    public function testMockConnectionTypeV1MockedError()
+    {
+        $expectedErrorCode = -12345;
+        $expectedErrorMsg  = 'mocked error';
+        $address           = sprintf(
+            'mock://{"error":{"code":%d,"message":"%s"}}',
+            $expectedErrorCode,
+            $expectedErrorMsg
+        );
+        $version           = JsonRpcClient::VERSION_1;
+        $method            = 'testMethod';
+        $params            = array(1, '2');
+
+        $client = new JsonRpcClient($address, $version);
+
+        $response = $client->sendNotification($method, $params);
+        $this->assertTrue($response);
+
+        $response = $client->sendRequest($method, $params);
+        $this->assertTrue($response->isError());
+        $this->assertEquals($expectedErrorCode, $response->error->code);
+        $this->assertEquals($expectedErrorMsg, $response->error->message);
+    }
+
     public function testMockConnectionTypeV2()
     {
         $address = 'mock://localhost';
@@ -623,5 +665,47 @@ class JsonRpcClientTest extends AbstractTestCase
         $this->assertTrue(isset($response->result->params));
         $this->assertEquals($method, $response->result->method);
         $this->assertEquals($params, $response->result->params);
+    }
+
+    public function testMockConnectionTypeV2MockedResult()
+    {
+        $expectedResult = 'mocked result';
+        $address        = sprintf('mock://{"result":"%s"}', $expectedResult);
+        $version        = JsonRpcClient::VERSION_2;
+        $method         = 'testMethod';
+        $params         = array(1, '2');
+
+        $client = new JsonRpcClient($address, $version);
+
+        $response = $client->sendNotification($method, $params);
+        $this->assertTrue($response);
+
+        $response = $client->sendRequest($method, $params);
+        $this->assertTrue($response->isSuccess());
+        $this->assertEquals($expectedResult, $response->result);
+    }
+
+    public function testMockConnectionTypeV2MockedError()
+    {
+        $expectedErrorCode = -12345;
+        $expectedErrorMsg  = 'mocked error';
+        $address           = sprintf(
+            'mock://{"error":{"code":%d,"message":"%s"}}',
+            $expectedErrorCode,
+            $expectedErrorMsg
+        );
+        $version           = JsonRpcClient::VERSION_2;
+        $method            = 'testMethod';
+        $params            = array(1, '2');
+
+        $client = new JsonRpcClient($address, $version);
+
+        $response = $client->sendNotification($method, $params);
+        $this->assertTrue($response);
+
+        $response = $client->sendRequest($method, $params);
+        $this->assertTrue($response->isError());
+        $this->assertEquals($expectedErrorCode, $response->error->code);
+        $this->assertEquals($expectedErrorMsg, $response->error->message);
     }
 }
