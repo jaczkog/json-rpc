@@ -44,6 +44,13 @@ class AddressTest extends \PHPUnit_Framework_TestCase
                 'port'     => 443,
                 'path'     => '/app',
             ),
+            array(
+                'string' => 'mock://{"result":"banana"}',
+                'protocol' => 'mock',
+                'host'     => '{"result":"banana"}',
+                'port'     => null,
+                'path'     => null,
+            ),
         );
     }
 

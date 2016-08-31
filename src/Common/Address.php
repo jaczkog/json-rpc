@@ -49,16 +49,29 @@ class Address
      */
     public static function parse($address)
     {
-        if (!preg_match('~^(?:(https?|wss?|tcp|mock)://)?([a-z0-9\\._-]+)(?::(\d+))?(/.*)?$~', $address, $matches)) {
+        $regex = <<<'EOT'
+~^
+    (?|
+        (?:(https?|wss?|tcp)://)?   # protocol
+        ([a-z0-9\._-]+)             # host
+        (?::(\d+))?                 # port
+        (/.*)?                      # path
+        |
+        (mock)://                   # protocol
+        (.*)                        # mocked response stored in host
+    )
+$~x
+EOT;
+        if (!preg_match($regex, $address, $matches)) {
             throw new InvalidAddressException($address);
         }
 
-        $protocol = !empty($matches[1]) ? strtolower($matches[1]) : Address::PROTOCOL_TCP;
+        $protocol = !empty($matches[1]) ? strtolower($matches[1]) : self::PROTOCOL_TCP;
         $host     = $matches[2];
         $port     = !empty($matches[3]) ? (int)$matches[3] : null;
         $path     = !empty($matches[4]) ? $matches[4] : null;
 
-        if ($protocol == Address::PROTOCOL_TCP) {
+        if ($protocol == self::PROTOCOL_TCP) {
             if (empty($port)) {
                 throw new InvalidAddressException($address);
             }
@@ -69,29 +82,31 @@ class Address
                     $path = null;
                 }
             }
-        } elseif (empty($path)) {
+        } elseif (empty($path) && $protocol != self::PROTOCOL_MOCK) {
             $path = '/';
         }
 
         if (empty($port)) {
             switch ($protocol) {
-                case Address::PROTOCOL_HTTP:
-                case Address::PROTOCOL_WS:
+                case self::PROTOCOL_HTTP:
+                case self::PROTOCOL_WS:
                     $port = 80;
                     break;
 
-                case Address::PROTOCOL_HTTPS:
-                case Address::PROTOCOL_WSS:
+                case self::PROTOCOL_HTTPS:
+                case self::PROTOCOL_WSS:
                     $port = 443;
                     break;
             }
         }
 
-        return new Address($protocol, $host, $port, $path);
+        return new self($protocol, $host, $port, $path);
     }
 
     public function __toString()
     {
-        return $this->protocol . '://' . $this->host . ':' . $this->port . $this->path;
+        return $this->protocol == self::PROTOCOL_MOCK ?
+            $this->protocol . '://' . $this->host :
+            $this->protocol . '://' . $this->host . ':' . $this->port . $this->path;
     }
 }
