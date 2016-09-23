@@ -250,6 +250,31 @@ class JsonRpcClientTest extends AbstractTestCase
                 'expectedPath'           => '/',
                 'expectedVersion'        => JsonRpcClient::VERSION_1,
             ),
+
+            'mock'               => array(
+                'address'                => 'mock://anything',
+                'version'                => '1.0',
+                'expectedException'      => null,
+                'expectedExceptionMsg'   => null,
+                'expectedConnectionType' => AbstractConnection::CONN_MOCK,
+                'expectedProtocol'       => Address::PROTOCOL_MOCK,
+                'expectedHost'           => 'anything',
+                'expectedPort'           => null,
+                'expectedPath'           => null,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
+            ),
+            'mock with response' => array(
+                'address'                => 'mock://{"result":"mocked result"}',
+                'version'                => '1.0',
+                'expectedException'      => null,
+                'expectedExceptionMsg'   => null,
+                'expectedConnectionType' => AbstractConnection::CONN_MOCK,
+                'expectedProtocol'       => Address::PROTOCOL_MOCK,
+                'expectedHost'           => '{"result":"mocked result"}',
+                'expectedPort'           => null,
+                'expectedPath'           => null,
+                'expectedVersion'        => JsonRpcClient::VERSION_1,
+            ),
         );
     }
 
